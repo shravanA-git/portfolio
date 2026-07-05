@@ -117,6 +117,7 @@ function HelixCard({ card }: { card: ExploreCard }) {
 // ── HelicalHome ────────────────────────────────────────────────────────────────
 export function HelicalHome() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const helixRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -156,8 +157,40 @@ export function HelicalHome() {
           scale: 1,
           scaleX: 1,
         });
+        gsap.set("[data-progress]", { opacity: 0 });
         return;
       }
+
+      // ── Page scroll progress bar ─────────────────────────────────────────
+      gsap.to("[data-progress]", {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.3,
+        },
+      });
+
+      // ── Cinematic hero exit — scrubbed, so scrolling back replays it ─────
+      // Layers leave at different speeds (kicker fastest, name slowest) for
+      // parallax depth; the name scales up and letter-spacing opens as it
+      // dissolves, like a camera pushing through the title.
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: "top top",
+            end: "bottom 30%",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        })
+        .to("[data-h1]", { yPercent: -16, scale: 1.06, letterSpacing: "0.05em", opacity: 0.12, ease: "none" }, 0)
+        .to("[data-hk]", { yPercent: -140, opacity: 0, ease: "none" }, 0)
+        .to("[data-hs]", { yPercent: -70, opacity: 0, ease: "none" }, 0)
+        .to("[data-hc]", { opacity: 0, ease: "none" }, 0);
 
       // ── Spine draw ───────────────────────────────────────────────────────
       gsap.from("[data-helix-spine]", {
@@ -194,37 +227,44 @@ export function HelicalHome() {
         const card = row.querySelector("[data-helix-card]");
         const node = row.querySelector("[data-helix-node]");
         const rung = row.querySelector("[data-helix-rung]");
-        const st = { trigger: row, start: "top 84%", invalidateOnRefresh: true };
 
-        gsap.from(node, {
-          scale: 0,
-          opacity: 0,
-          duration: 0.45,
-          ease: "back.out(2.5)",
-          scrollTrigger: st,
+        // Scrubbed unfold: scroll position *drives* the fold, so easing back
+        // up folds the ladder closed again — the scroll feels like a hand on
+        // the animation, not a trigger for it.
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: row,
+            start: "top 96%",
+            end: "top 52%",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
         });
 
-        gsap.from(rung, {
-          scaleX: 0,
-          transformOrigin: isLeft ? "right center" : "left center",
-          duration: 0.5,
-          ease: "expo.out",
-          scrollTrigger: st,
-          delay: 0.08,
-        });
-
-        // perspective prop creates a local 3D effect per card —
-        // avoids preserve-3d which causes 3D hit-area mismatches
-        gsap.from(card, {
-          perspective: 1100,
-          rotateY: isLeft ? -68 : 68,
-          z: -60,
-          opacity: 0,
-          duration: 1.0,
-          ease: "expo.out",
-          scrollTrigger: st,
-          delay: 0.12,
-        });
+        tl.from(node, { scale: 0, opacity: 0, ease: "back.out(2)", duration: 0.35 }, 0)
+          .from(
+            rung,
+            {
+              scaleX: 0,
+              transformOrigin: isLeft ? "right center" : "left center",
+              duration: 0.4,
+            },
+            0.08
+          )
+          // perspective prop creates a local 3D effect per card —
+          // avoids preserve-3d which causes 3D hit-area mismatches
+          .from(
+            card,
+            {
+              perspective: 1100,
+              rotateY: isLeft ? -72 : 72,
+              z: -90,
+              yPercent: 16,
+              opacity: 0,
+              duration: 1,
+            },
+            0.12
+          );
       });
     },
     { scope: rootRef }
@@ -234,15 +274,29 @@ export function HelicalHome() {
 
   return (
     <div ref={rootRef}>
+      {/* ── Page scroll progress ──────────────────────────────────────────── */}
+      <div
+        data-progress
+        aria-hidden="true"
+        className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-accent"
+        style={{ transform: "scaleX(0)" }}
+      />
+
       {/* ── Name header ───────────────────────────────────────────────────── */}
-      <section className="container-page flex min-h-dvh flex-col justify-center pt-24 pb-12">
+      <section
+        ref={heroRef}
+        className="container-page flex min-h-dvh flex-col justify-center pt-24 pb-12"
+      >
         <p
           data-hk
           className="mb-6 font-mono text-label tracking-[0.08em] text-accent-on-text uppercase"
         >
           {PERSON.kicker}
         </p>
-        <h1 className="font-display text-display-xl font-semibold tracking-tight text-foreground">
+        <h1
+          data-h1
+          className="font-display text-display-xl font-semibold tracking-tight text-foreground"
+        >
           {NAME_WORDS.map((word) => (
             <span
               key={word}
@@ -254,10 +308,13 @@ export function HelicalHome() {
             </span>
           ))}
         </h1>
-        <p className="mt-6 font-mono text-body-lg text-foreground-secondary">
+        <p data-hs className="mt-6 font-mono text-body-lg text-foreground-secondary">
           {PERSON.subtitle}
         </p>
-        <p className="mt-16 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase animate-bounce">
+        <p
+          data-hc
+          className="mt-16 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase animate-bounce"
+        >
           Scroll
         </p>
       </section>

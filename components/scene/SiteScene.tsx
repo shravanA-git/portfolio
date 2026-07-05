@@ -197,13 +197,24 @@ function generateParticleAttributes(): ParticleAttributes {
 }
 
 // ── ParticleField ─────────────────────────────────────────────────────────────
+// Journey colors: the helix shifts from signal blue at the top of the page
+// toward violet at the bottom — scroll position is the mix factor.
+const COLOR_TOP = new THREE.Color("#4d8dff");
+const COLOR_BOTTOM = new THREE.Color("#8a63ff");
+
 type ParticleFieldProps = {
   reducedMotion: boolean;
   scrollProgress: React.RefObject<number>;
+  scrollVelocity: React.RefObject<number>;
   mouseNDC: React.RefObject<{ x: number; y: number }>;
 };
 
-function ParticleField({ reducedMotion, scrollProgress, mouseNDC }: ParticleFieldProps) {
+function ParticleField({
+  reducedMotion,
+  scrollProgress,
+  scrollVelocity,
+  mouseNDC,
+}: ParticleFieldProps) {
   const materialRef = useRef<InstanceType<typeof ParticleFieldMaterial>>(null);
   const groupRef = useRef<THREE.Group>(null);
   const { positions, scales, seeds } = useMemo(() => generateParticleAttributes(), []);
@@ -211,18 +222,33 @@ function ParticleField({ reducedMotion, scrollProgress, mouseNDC }: ParticleFiel
   useFrame((state, delta) => {
     const progress = scrollProgress.current;
 
+    // Velocity decays each frame so a scroll burst shimmers, then settles.
+    scrollVelocity.current *= 0.92;
+    const speedBoost = Math.min(Math.abs(scrollVelocity.current) / 2500, 1.6);
+
     if (materialRef.current) {
       if (!reducedMotion) {
-        materialRef.current.uTime += delta;
+        materialRef.current.uTime += delta * (1 + speedBoost * 1.8);
       }
       materialRef.current.uPixelRatio = state.viewport.dpr;
       const m = mouseNDC.current;
       materialRef.current.uMouse.set(m.x, m.y);
+      materialRef.current.uColor.lerpColors(COLOR_TOP, COLOR_BOTTOM, progress);
     }
 
     if (groupRef.current) {
       groupRef.current.position.y = (0.5 - progress) * TRAVEL_RANGE;
-      groupRef.current.rotation.y = progress * Math.PI * 0.5;
+      // Full corkscrew over the page instead of a quarter turn, with a slight
+      // scrubbed pitch so the descent reads as banking through 3D space.
+      groupRef.current.rotation.y = progress * Math.PI * 1.35;
+      groupRef.current.rotation.x = (progress - 0.5) * 0.18;
+    }
+
+    if (!reducedMotion) {
+      // Camera dolly-in + gentle lateral arc tied to scroll.
+      state.camera.position.z = 5 - progress * 1.4;
+      state.camera.position.x = Math.sin(progress * Math.PI) * 0.35;
+      state.camera.lookAt(0, 0, 0);
     }
   });
 
@@ -248,6 +274,7 @@ function ParticleField({ reducedMotion, scrollProgress, mouseNDC }: ParticleFiel
 // ── Scroll progress ───────────────────────────────────────────────────────────
 function useGlobalScrollProgress(
   scrollProgress: React.RefObject<number>,
+  scrollVelocity: React.RefObject<number>,
   reducedMotion: boolean
 ) {
   useGSAP(() => {
@@ -260,11 +287,12 @@ function useGlobalScrollProgress(
       scrub: true,
       onUpdate: (self) => {
         scrollProgress.current = self.progress;
+        scrollVelocity.current = self.getVelocity();
       },
     });
 
     return () => { trigger.kill(); };
-  }, [reducedMotion, scrollProgress]);
+  }, [reducedMotion, scrollProgress, scrollVelocity]);
 }
 
 // ── SiteScene (exported) ──────────────────────────────────────────────────────
@@ -276,6 +304,7 @@ export function SiteScene() {
   );
 
   const scrollProgress = useRef(0.5);
+  const scrollVelocity = useRef(0);
   const mouseNDC = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -289,7 +318,7 @@ export function SiteScene() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  useGlobalScrollProgress(scrollProgress, reducedMotion);
+  useGlobalScrollProgress(scrollProgress, scrollVelocity, reducedMotion);
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0">
@@ -302,6 +331,7 @@ export function SiteScene() {
         <ParticleField
           reducedMotion={reducedMotion}
           scrollProgress={scrollProgress}
+          scrollVelocity={scrollVelocity}
           mouseNDC={mouseNDC}
         />
       </Canvas>
