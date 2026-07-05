@@ -31,6 +31,9 @@ const ParticleFieldMaterial = shaderMaterial(
     uTime: 0,
     uPixelRatio: 1,
     uColor: new THREE.Color("#4d8dff"),
+    uAccentA: new THREE.Color("#3ddad0"), // teal
+    uAccentB: new THREE.Color("#ff5d8f"), // magenta
+    uAccentC: new THREE.Color("#ffb454"), // amber
     uMouse: new THREE.Vector2(0, 0),
   },
   /* glsl */ `
@@ -40,9 +43,11 @@ const ParticleFieldMaterial = shaderMaterial(
 
     attribute float aScale;
     attribute float aSeed;
+    attribute float aHue;
 
     varying float vAlpha;
     varying float vMouseDist;
+    varying float vHue;
 
     void main() {
       vec3 pos = position;
@@ -71,12 +76,17 @@ const ParticleFieldMaterial = shaderMaterial(
       gl_PointSize = aScale * uPixelRatio * pulse * sizeBoost * (20.0 / -mvPosition.z);
 
       vAlpha = pulse;
+      vHue = aHue;
     }
   `,
   /* glsl */ `
     uniform vec3 uColor;
+    uniform vec3 uAccentA;
+    uniform vec3 uAccentB;
+    uniform vec3 uAccentC;
     varying float vAlpha;
     varying float vMouseDist;
+    varying float vHue;
 
     void main() {
       vec2 uv = gl_PointCoord.xy - 0.5;
@@ -85,9 +95,16 @@ const ParticleFieldMaterial = shaderMaterial(
 
       if (circle <= 0.001) discard;
 
-      // Base color: warm core blending to accent blue at the ring
-      vec3 core = mix(vec3(1.0), uColor, 0.3);
-      vec3 ring = mix(vec3(1.0), uColor, 0.75);
+      // Per-particle tint: most particles ride the scroll-shifting base color;
+      // a weighted minority pop in teal / magenta / amber for contrast.
+      vec3 tint = uColor;
+      if (vHue > 0.95)      tint = uAccentC;
+      else if (vHue > 0.82) tint = uAccentB;
+      else if (vHue > 0.62) tint = uAccentA;
+
+      // Warm core blending to the tint at the ring
+      vec3 core = mix(vec3(1.0), tint, 0.3);
+      vec3 ring = mix(vec3(1.0), tint, 0.75);
       vec3 color = mix(core, ring, smoothstep(0.0, 0.45, dist));
 
       // Color bloom near cursor — shift toward bright blue-white
@@ -113,21 +130,27 @@ type ParticleAttributes = {
   positions: Float32Array;
   scales: Float32Array;
   seeds: Float32Array;
+  hues: Float32Array;
 };
 
 function generateParticleAttributes(): ParticleAttributes {
   const positions = new Float32Array(PARTICLE_COUNT * 3);
   const scales = new Float32Array(PARTICLE_COUNT);
   const seeds = new Float32Array(PARTICLE_COUNT);
+  const hues = new Float32Array(PARTICLE_COUNT);
   let idx = 0;
 
-  // Helper to write one particle
-  const put = (x: number, y: number, z: number, scale: number) => {
+  // Helper to write one particle. `hueMax` caps the color roll: the helix
+  // strands stay on the base blue→violet (structure reads cohesive), while
+  // ambient particles can land in the accent bands (teal/magenta/amber) —
+  // color lives in the atmosphere, not the skeleton.
+  const put = (x: number, y: number, z: number, scale: number, hueMax = 0.62) => {
     positions[idx * 3] = x;
     positions[idx * 3 + 1] = y;
     positions[idx * 3 + 2] = z;
     scales[idx] = scale;
     seeds[idx] = Math.random();
+    hues[idx] = Math.random() * hueMax;
     idx++;
   };
 
@@ -172,16 +195,18 @@ function generateParticleAttributes(): ParticleAttributes {
     for (let p = 0; p < BASE_PAIR_PTS && idx < PARTICLE_COUNT; p++) {
       const t = (p + 0.5) / BASE_PAIR_PTS;
       const jitter = (Math.random() - 0.5) * 0.07;
+      // Rungs may roll into the teal band — a hint of color in the structure
       put(
         ax + t * (bx - ax) + jitter,
         y + (Math.random() - 0.5) * 0.05,
         az + t * (bz - az) + jitter,
-        0.25 + Math.random() * 0.5
+        0.25 + Math.random() * 0.5,
+        0.82
       );
     }
   }
 
-  // ── Ambient scatter ────────────────────────────────────────────────────────
+  // ── Ambient scatter — full accent palette (the colorful fireflies) ────────
   while (idx < PARTICLE_COUNT) {
     const r = AMBIENT_RADIUS * Math.cbrt(Math.random());
     const theta = Math.random() * Math.PI * 2;
@@ -189,11 +214,12 @@ function generateParticleAttributes(): ParticleAttributes {
       Math.cos(theta) * r,
       (Math.random() - 0.5) * SPINE_LENGTH,
       Math.sin(theta) * r * 0.6 - 2,
-      Math.random() * 0.9 + 0.2
+      Math.random() * 0.9 + 0.2,
+      1.0
     );
   }
 
-  return { positions, scales, seeds };
+  return { positions, scales, seeds, hues };
 }
 
 // ── ParticleField ─────────────────────────────────────────────────────────────
@@ -217,7 +243,7 @@ function ParticleField({
 }: ParticleFieldProps) {
   const materialRef = useRef<InstanceType<typeof ParticleFieldMaterial>>(null);
   const groupRef = useRef<THREE.Group>(null);
-  const { positions, scales, seeds } = useMemo(() => generateParticleAttributes(), []);
+  const { positions, scales, seeds, hues } = useMemo(() => generateParticleAttributes(), []);
 
   useFrame((state, delta) => {
     const progress = scrollProgress.current;
@@ -259,6 +285,7 @@ function ParticleField({
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
           <bufferAttribute attach="attributes-aScale" args={[scales, 1]} />
           <bufferAttribute attach="attributes-aSeed" args={[seeds, 1]} />
+          <bufferAttribute attach="attributes-aHue" args={[hues, 1]} />
         </bufferGeometry>
         <particleFieldMaterial
           ref={materialRef}
