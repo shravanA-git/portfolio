@@ -1,0 +1,20 @@
+# Shravan Anand
+
+> Research portfolio for Shravan Anand — CS + Economics, Duke University, Class of 2030. Work spans machine learning, computational fluid dynamics (CFD), and quantitative finance.
+
+## Projects
+
+- [Rocket Flow](https://shravan-anand.vercel.app/#rocket-flow): A CFD + ML pipeline that generates rocket fin geometries in OpenSCAD, runs 1,000+ OpenFOAM simulations, and trains an AutoGluon ensemble (R² = 0.989) to predict drag, with SHAP for feature explanation. Published at https://doi.org/10.5281/zenodo.17410956.
+- [Traffic Collision ML](https://shravan-anand.vercel.app/#traffic-collision-ml): Analysis of 260,000 California traffic collisions (SWITRS, 2006–2021) predicting crash severity with a SMOTE-balanced random forest (71% weighted accuracy). Published at https://doi.org/10.5281/zenodo.16749278.
+- [NLP Finance](https://shravan-anand.vercel.app/#nlp-finance): A BERT-based sentiment classifier fine-tuned on financial news headlines, improving accuracy from ~70% to 99% across positive/neutral/negative classes.
+
+## Contact
+
+- Email: shravan.anand.2026@gmail.com
+- GitHub: https://github.com/shravanA-git
+- LinkedIn: https://www.linkedin.com/in/shravan-anand
+
+## Notes
+
+- This site is a single-page portfolio; all project sections live on the homepage at anchors (e.g. `/#rocket-flow`).
+- Awards include 1st Place — Qorvo Young Innovators Award (Dallas Regional Science Fair) and Top 4% internationally — DECA Stock Market Game.

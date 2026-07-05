@@ -26,19 +26,72 @@ No test suite is configured yet.
 
 ## Architecture
 
-- **App Router** under `app/`. Currently only the default `create-next-app` scaffold: `app/layout.tsx` (root layout), `app/page.tsx` (home page), `app/globals.css`.
-- `app/layout.tsx` loads `Geist`/`Geist_Mono` via `next/font/google` and exposes them as CSS variables (`--font-geist-sans`, `--font-geist-mono`) consumed by `globals.css`.
-- `app/globals.css` is the Tailwind v4 entry point (`@import "tailwindcss"`). Theme tokens (`--color-background`, `--color-foreground`, font vars) are defined via `@theme inline`, with dark-mode overrides under `prefers-color-scheme`. Tailwind v4 is config-less/CSS-first — there is no `tailwind.config.*`.
+This is a **single-page portfolio** (`/`) — all content lives in anchored
+`<section>`s, nav links scroll to anchors rather than routing. See
+`notes/architecture.md` for the full component hierarchy, URL plan, and
+semantic HTML/JSON-LD plan, and `design-system.md` for the visual language
+(colors, type scale, spacing tokens).
+
+- **App Router** under `app/`: `app/layout.tsx` (root layout — fonts, metadata,
+  JSON-LD, mounts the persistent `<SiteScene>` background plus
+  `SmoothScrollProvider`/`CustomCursor`/`Nav`/`Footer`), `app/page.tsx` (assembles
+  all sections), `app/globals.css`, plus `not-found.tsx`, `sitemap.ts`, `robots.ts`,
+  `icon.tsx`/`apple-icon.tsx`, `opengraph-image.tsx`.
+- `app/layout.tsx` loads `Geist`/`Geist_Mono`/`Space_Grotesk` via `next/font/google`
+  and exposes them as CSS variables consumed by `globals.css`.
+- `app/globals.css` is the Tailwind v4 entry point (`@import "tailwindcss"`). Theme
+  tokens (`--color-background`, `--color-accent`, spacing, type scale, easing/duration)
+  are defined via `@theme inline` — see `design-system.md`. Tailwind v4 is
+  config-less/CSS-first — there is no `tailwind.config.*`. Custom utilities (e.g.
+  `container-page`, `section-padding`, `no-scrollbar`) are defined with `@utility`,
+  which supports CSS nesting (`&::-webkit-scrollbar`).
+- `components/sections/` holds one component per page section (Hero,
+  CategoryCarousel, About, Projects, Awards, Skills, Leadership, Contact) plus
+  sub-components (ProjectCard, StatCallout, AwardItem, SkillChip, LeadershipItem).
+  `components/scene/SiteScene.tsx` is the persistent R3F background.
+  `components/providers/` has `SmoothScrollProvider` (Lenis) and `CustomCursor`.
+- `lib/content.ts` is the single source of truth for all copy/data — `PERSON`,
+  `NAV_LINKS`, `PROJECTS`, `AWARDS`, `SKILL_GROUPS`, `LEADERSHIP`, `CONTACT_LINKS`,
+  `EXPLORE_CARDS` (homepage carousel cards, mirrors `NAV_LINKS`). Edit this file to
+  change site content; `lib/schema.ts` builds JSON-LD from the same data.
 - Path alias `@/*` resolves to the repo root (`tsconfig.json`).
-- `next.config.ts` is currently empty — add Next 16 options here (`turbopack`, `cacheComponents`, `images.remotePatterns`, etc.) as needed.
+- `next.config.ts` sets `turbopack.root` only — add other Next 16 options here
+  (`cacheComponents`, `images.remotePatterns`, etc.) as needed.
 
 ## Animation/3D stack
 
-The following are installed (in `package.json`) for building out an animated portfolio, but not yet wired into any pages:
+These are installed **and wired in**:
 
-- **GSAP** + `@gsap/react` (`useGSAP` hook) — timeline/scroll-driven animation.
-- **Framer Motion** — component-level animation/transitions.
-- **three** + **@react-three/fiber** + **@react-three/drei** — 3D scenes.
-- **lenis** — smooth scrolling.
+- **GSAP** + `@gsap/react` (`useGSAP` hook) + `ScrollTrigger` — used in
+  `Hero.tsx` (name-reveal animation) and `Projects.tsx` (scroll-triggered
+  fade-ins). Both have `prefers-reduced-motion` branches.
+- **three** + **@react-three/fiber** + **@react-three/drei** — `components/scene/SiteScene.tsx`
+  renders a full-viewport particle "spine" as a fixed background behind all
+  content (mounted once in `app/layout.tsx`).
+- **lenis** — smooth scrolling via `SmoothScrollProvider`, synced to the GSAP
+  ticker. Because of the scroll lag this introduces, `window.scrollY` and
+  `scrollTo` calls may not reflect the final position immediately.
 
-Any code using these (GSAP timelines, R3F canvases, Framer Motion components, Lenis) touches the DOM/browser APIs and must be in a Client Component (`"use client"`).
+**Framer Motion** is installed but currently unused — prefer GSAP for new
+scroll-driven animation to stay consistent with the existing code.
+
+Any code using these (GSAP timelines, R3F canvases, Lenis) touches the
+DOM/browser APIs and must be in a Client Component (`"use client"`).
+
+## Reduced motion
+
+`globals.css` has a global `@media (prefers-reduced-motion: reduce)` override
+that disables animations/transitions and forces `scroll-behavior: auto`. GSAP
+components additionally check
+`window.matchMedia("(prefers-reduced-motion: reduce)").matches` and skip their
+JS-driven animations when true.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
