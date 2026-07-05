@@ -51,11 +51,11 @@ Color is never the sole signal — interactive elements also use underline, weig
 
 | Role | Font | Source | Usage |
 |---|---|---|---|
-| Display | **Space Grotesk** | `next/font/google` | Hero name, section titles, nav wordmark |
+| Display | **Syne** | `next/font/google` | Hero name, section titles, nav wordmark |
 | Body | **Geist Sans** | already wired in `app/layout.tsx` | Paragraphs, nav links, UI text |
 | Mono | **Geist Mono** | already wired in `app/layout.tsx` | Stats, tags, section indices, coordinates, dates |
 
-Geist pairs cleanly with Space Grotesk's geometric forms without converging on
+Geist pairs cleanly with Syne's geometric forms without converging on
 Inter — keeps the "engineered" feel and reuses fonts already in the scaffold.
 
 ### Type scale (mobile-first, `clamp()` for fluid desktop scaling)
@@ -116,7 +116,7 @@ horizontal gutters.
 ## 5. Component Patterns
 
 - **Nav** — fixed top, `backdrop-blur` over `--color-background` at 70% opacity,
-  Space Grotesk wordmark left, mono section links right, active section gets an
+  Syne wordmark left, mono section links right, active section gets an
   accent underline (driven by ScrollTrigger/IntersectionObserver).
 - **Hero** — full-viewport (`min-h-dvh`), R3F canvas background (`aria-hidden`,
   decorative), centered name in `--text-display-xl`, subtitle below in mono,

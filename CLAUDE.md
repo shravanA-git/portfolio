@@ -37,7 +37,7 @@ semantic HTML/JSON-LD plan, and `design-system.md` for the visual language
   `SmoothScrollProvider`/`CustomCursor`/`Nav`/`Footer`), `app/page.tsx` (assembles
   all sections), `app/globals.css`, plus `not-found.tsx`, `sitemap.ts`, `robots.ts`,
   `icon.tsx`/`apple-icon.tsx`, `opengraph-image.tsx`.
-- `app/layout.tsx` loads `Geist`/`Geist_Mono`/`Space_Grotesk` via `next/font/google`
+- `app/layout.tsx` loads `Geist`/`Geist_Mono`/`Syne` via `next/font/google`
   and exposes them as CSS variables consumed by `globals.css`.
 - `app/globals.css` is the Tailwind v4 entry point (`@import "tailwindcss"`). Theme
   tokens (`--color-background`, `--color-accent`, spacing, type scale, easing/duration)
