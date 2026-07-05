@@ -3,10 +3,10 @@
 
 export const SITE_URL = "https://portfolio-hazel-sigma-58.vercel.app";
 
-export const SITE_TITLE = "Shravan Anand — CS + Economics @ Duke '30";
+export const SITE_TITLE = "Shravan Anand · CS + Economics @ Duke '30";
 
 export const SITE_DESCRIPTION =
-  "Shravan Anand's research portfolio — machine learning, CFD, and quantitative finance projects. CS + Economics, Duke University Class of 2030.";
+  "Shravan Anand's research portfolio: machine learning, CFD, and quantitative finance projects. CS + Economics, Duke University Class of 2030.";
 
 export const PERSON = {
   name: "Shravan Anand",
@@ -17,7 +17,7 @@ export const PERSON = {
   linkedin: "https://www.linkedin.com/in/shravan-anand",
   about: [
     "Incoming member of Duke University's Class of 2030, studying Computer Science and Economics.",
-    "Work moves between quantitative finance, machine learning, data science, and aerospace engineering — fine-tuning BERT models on financial headlines one month, running thousand-simulation CFD sweeps on rocket geometry the next.",
+    "Work moves between quantitative finance, machine learning, data science, and aerospace engineering: fine-tuning BERT models on financial headlines one month, running thousand-simulation CFD sweeps on rocket geometry the next.",
     "Each project starts as a research question and ends as a working pipeline, with the data to back it up.",
   ],
 } as const;
@@ -53,7 +53,7 @@ export const PROJECTS: Project[] = [
     title: "MacroScope",
     category: "Macro Regime Detection",
     description:
-      "A live quantitative research platform that classifies the US economy into four macro regimes — Expansion, Late-Cycle, Recovery, Contraction — using a Hidden Markov Model trained on 35 years of FRED data. A walk-forward validated AutoGluon ensemble forecasts next-month regime transitions. Full stack: Python HMM + FastAPI backend, Next.js 16 frontend, deployed on Vercel.",
+      "A live quantitative research platform that classifies the US economy into four macro regimes (Expansion, Late-Cycle, Recovery, Contraction) using a Hidden Markov Model trained on 35 years of FRED data. A walk-forward validated AutoGluon ensemble forecasts next-month regime transitions. Full stack: Python HMM + FastAPI backend, Next.js 16 frontend, deployed on Vercel.",
     stats: [
       { value: "90.4%", label: "Walk-forward validation accuracy" },
       { value: "35 yrs", label: "FRED macroeconomic data, 1990–2026" },
@@ -63,16 +63,52 @@ export const PROJECTS: Project[] = [
     tags: ["Python", "hmmlearn", "AutoGluon", "FastAPI", "Next.js", "FRED API", "GSAP"],
     links: [
       { label: "Live Dashboard →", href: "https://macroscope-red.vercel.app" },
-      { label: "Code on GitHub →", href: "https://github.com/shravanA-git" },
+      { label: "Code on GitHub →", href: "https://github.com/shravanA-git/macroscope" },
     ],
     image: "/images/macroscope.png",
+  },
+  {
+    slug: "argus",
+    title: "Argus",
+    category: "Multi-Agent RAG Platform",
+    description:
+      "A production multi-agent RAG platform that answers questions about uploaded documents with inline citations, then grades its own answers. Five agents handle ingestion, query routing, hybrid retrieval (pgvector dense search fused with BM25 and reranked by a cross-encoder), streaming synthesis, and an automated RAGAS evaluation loop that scores every answer for faithfulness, context precision, and answer relevancy. Runs entirely on free-tier infrastructure.",
+    stats: [
+      { value: "1.00", label: "Hit@5, hybrid retrieval benchmark" },
+      { value: "0.92", label: "MRR with cross-encoder reranking" },
+      { value: "5 agents", label: "Ingest, route, retrieve, synthesize, evaluate" },
+      { value: "Live", label: "Deployed to production on Vercel" },
+    ],
+    tags: ["TypeScript", "Next.js", "pgvector", "LangChain", "RAGAS", "Groq", "HuggingFace", "Neon"],
+    links: [
+      { label: "Live Demo →", href: "https://argus-five-tau.vercel.app" },
+      { label: "Code on GitHub →", href: "https://github.com/shravanA-git/argus" },
+    ],
+  },
+  {
+    slug: "earningsedge",
+    title: "EarningsEdge",
+    category: "Earnings Call Intelligence",
+    description:
+      "An earnings call intelligence platform that scores SEC EDGAR transcripts with FinBERT sentiment analysis, then adjusts each score for the prevailing macro regime supplied by MacroScope. The result is a sentiment surprise signal: whether a company sounded better or worse than the economic climate would predict. Covers 20 S&P 500 tickers across 6 sectors, with live filing analysis and generated PDF reports.",
+    stats: [
+      { value: "20", label: "S&P 500 tickers across 6 sectors" },
+      { value: "FinBERT", label: "Domain-tuned financial sentiment model" },
+      { value: "4 regimes", label: "MacroScope HMM baselines per call" },
+      { value: "Live", label: "Deployed to production on Vercel" },
+    ],
+    tags: ["Next.js", "TypeScript", "FinBERT", "HuggingFace", "SEC EDGAR", "Groq"],
+    links: [
+      { label: "Live Demo →", href: "https://frontend-vert-nu-e3dizlrvd1.vercel.app" },
+      { label: "Code on GitHub →", href: "https://github.com/shravanA-git/earningsedge" },
+    ],
   },
   {
     slug: "rocket-flow",
     title: "Rocket Flow",
     category: "CFD + ML Pipeline",
     description:
-      "A computational pipeline that generates rocket fin geometries in OpenSCAD, runs them through 1,000+ OpenFOAM CFD simulations, and trains an AutoGluon ensemble to predict drag from geometric parameters. SHAP analysis reveals which fin dimensions matter most. The ensemble reached R² = 0.989 — outperforming polynomial regression and standalone random forests.",
+      "A computational pipeline that generates rocket fin geometries in OpenSCAD, runs them through 1,000+ OpenFOAM CFD simulations, and trains an AutoGluon ensemble to predict drag from geometric parameters. SHAP analysis reveals which fin dimensions matter most. The ensemble reached R² = 0.989, outperforming polynomial regression and standalone random forests.",
     stats: [
       { value: "R² 0.989", label: "AutoGluon ensemble accuracy" },
       { value: "MAE 0.036", label: "Best model mean absolute error" },
@@ -107,7 +143,7 @@ export const PROJECTS: Project[] = [
     title: "Traffic Collision ML",
     category: "Crash Severity Prediction",
     description:
-      "Analysis of 260,000 California traffic collisions (SWITRS, 2006–2021) to predict crash severity. After preprocessing and addressing class imbalance with SMOTE, a Random Forest model reached 71% weighted accuracy — outperforming KNN and linear baselines — with feature importance analysis surfacing the conditions most associated with severe outcomes.",
+      "Analysis of 260,000 California traffic collisions (SWITRS, 2006–2021) to predict crash severity. After preprocessing and addressing class imbalance with SMOTE, a Random Forest model reached 71% weighted accuracy, outperforming KNN and linear baselines, with feature importance analysis surfacing the conditions most associated with severe outcomes.",
     stats: [
       { value: "260,000", label: "SWITRS crash records, 2006–2021" },
       { value: "71%", label: "Weighted accuracy (Random Forest + SMOTE)" },
@@ -128,11 +164,11 @@ export const PROJECTS: Project[] = [
 export type Award = { title: string; detail: string };
 
 export const AWARDS: Award[] = [
-  { title: "1st Place — Qorvo Young Innovators Award", detail: "Dallas Regional Science Fair, selected from 11,000+ students" },
-  { title: "Top 4% — DECA Stock Market Game", detail: "80% portfolio growth, top 4% of 5,000+ teams internationally" },
+  { title: "1st Place · Qorvo Young Innovators Award", detail: "Dallas Regional Science Fair, selected from 11,000+ students" },
+  { title: "Top 4% · DECA Stock Market Game", detail: "80% portfolio growth, top 4% of 5,000+ teams internationally" },
   { title: "DECA ICDC Thrive Academy Nominee", detail: "1 of 500 students nominated internationally" },
-  { title: "2nd Place — Texas State DECA", detail: "Principles of Finance" },
-  { title: "1st Place — District DECA", detail: "Travel & Tourism" },
+  { title: "2nd Place · Texas State DECA", detail: "Principles of Finance" },
+  { title: "1st Place · District DECA", detail: "Travel & Tourism" },
   { title: "National Merit Commended Scholar", detail: "" },
   { title: "AP Scholar with Distinction", detail: "SAT 1570 (780 EBRW / 790 Math)" },
 ];
@@ -200,7 +236,7 @@ export const EXPLORE_CARDS: ExploreCard[] = [
     index: "01",
     label: "About",
     description:
-      "CS + Economics at Duke, Class of 2030 — research spanning machine learning, CFD, and quantitative finance.",
+      "CS + Economics at Duke, Class of 2030, with research spanning machine learning, CFD, and quantitative finance.",
     meta: "Profile",
   },
   {
@@ -208,15 +244,15 @@ export const EXPLORE_CARDS: ExploreCard[] = [
     index: "02",
     label: "Projects",
     description:
-      "Four research projects spanning aerospace, public safety, financial markets, and macro economics — each shipped as code, data, and a publication.",
-    meta: `4 projects`,
+      "Six research projects spanning applied AI, aerospace, public safety, financial markets, and macro economics, each shipped as working code and data.",
+    meta: `${PROJECTS.length} projects`,
   },
   {
     href: "/awards",
     index: "03",
     label: "Awards",
     description:
-      "National and state recognition — from a 1st-place science fair win to top rankings in DECA and academic scholarships.",
+      "National and state recognition, from a 1st-place science fair win to top rankings in DECA and academic scholarships.",
     meta: `${AWARDS.length} awards`,
   },
   {
@@ -224,7 +260,7 @@ export const EXPLORE_CARDS: ExploreCard[] = [
     index: "04",
     label: "Skills",
     description:
-      "A working toolkit across machine learning, simulation, and quantitative finance — built through research, not just coursework.",
+      "A working toolkit across machine learning, simulation, and quantitative finance, built through research rather than coursework alone.",
     meta: `${SKILL_GROUPS.length} domains`,
   },
   {

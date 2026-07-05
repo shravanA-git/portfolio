@@ -28,7 +28,7 @@ export function buildJsonLd() {
           "Data Science",
         ],
         award: AWARDS.map((award) =>
-          award.detail ? `${award.title} — ${award.detail}` : award.title
+          award.detail ? `${award.title} · ${award.detail}` : award.title
         ),
       },
       {
