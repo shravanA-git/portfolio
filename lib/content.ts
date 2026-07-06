@@ -84,6 +84,7 @@ export const PROJECTS: Project[] = [
       { label: "Live Demo →", href: "https://argus-five-tau.vercel.app" },
       { label: "Code on GitHub →", href: "https://github.com/shravanA-git/argus" },
     ],
+    image: "/images/argus.png",
   },
   {
     slug: "earningsedge",
@@ -102,6 +103,7 @@ export const PROJECTS: Project[] = [
       { label: "Live Demo →", href: "https://frontend-vert-nu-e3dizlrvd1.vercel.app" },
       { label: "Code on GitHub →", href: "https://github.com/shravanA-git/earningsedge" },
     ],
+    image: "/images/earningsedge.png",
   },
   {
     slug: "rocket-flow",
