@@ -68,6 +68,25 @@ export const PROJECTS: Project[] = [
     image: "/images/macroscope.png",
   },
   {
+    slug: "conviction",
+    title: "Conviction",
+    category: "Equity Research Platform",
+    description:
+      "An equity research notebook where every stock pitch is timestamped in git history and tracked live against the S&P 500, with no retroactive edits. Each pitch is a structured research note: Situation, Complication, and falsifiable thesis pillars, MECE risk tables with mitigants, comparable multiples frozen at pitch date, bear, base, and bull targets, and an interactive DCF with a WACC by terminal-growth sensitivity grid. A form-based Pitch Builder generates new entries.",
+    stats: [
+      { value: "Live", label: "Performance tracked vs SPY from pitch date" },
+      { value: "3 lenses", label: "Comps, targets, interactive DCF" },
+      { value: "0 deps", label: "Hand-rolled SVG charts, plain math, no LLM" },
+      { value: "Timestamped", label: "Git history is the accountability layer" },
+    ],
+    tags: ["TypeScript", "Next.js", "Valuation", "DCF", "Equity Research"],
+    links: [
+      { label: "Live Site →", href: "https://conviction-woad.vercel.app" },
+      { label: "Code on GitHub →", href: "https://github.com/shravanA-git/conviction" },
+    ],
+    image: "/images/conviction.png",
+  },
+  {
     slug: "argus",
     title: "Argus",
     category: "Multi-Agent RAG Platform",
@@ -246,7 +265,7 @@ export const EXPLORE_CARDS: ExploreCard[] = [
     index: "02",
     label: "Projects",
     description:
-      "Six research projects spanning applied AI, aerospace, public safety, financial markets, and macro economics, each shipped as working code and data.",
+      "Research projects spanning markets, applied AI, and machine learning, from equity research and macro regime detection to a self-evaluating RAG platform, each shipped as working code and data.",
     meta: `${PROJECTS.length} projects`,
   },
   {
