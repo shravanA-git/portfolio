@@ -1,17 +1,18 @@
 # Shravan Anand — Personal Portfolio
 
-**Live site: https://portfolio-hazel-sigma-58.vercel.app**
+**Live site: https://shravananand.me**
 
 ## What is this?
 
-My personal portfolio — a single-page site with smooth-scrolling sections for projects, awards,
-skills, and leadership, rendered over an animated 3D particle background. Everything respects
-`prefers-reduced-motion` for visitors who disable animations.
+My personal portfolio: a home page plus a route per section (about, projects, awards, skills,
+leadership, contact), rendered over an animated 3D particle background that persists across
+navigation. Everything respects `prefers-reduced-motion` for visitors who disable animations.
 
 Featured projects (each with its own repo and live deployment):
 
 | Project | What it does | Links |
 | --- | --- | --- |
+| **Cofound** | A coding agent a whole team shares: one transcript per project rather than per person, so a teammate's correction continues the same run | [live](https://cofound-tau.vercel.app) |
 | **Argus** | Multi-agent RAG platform that answers questions about your documents with citations, then grades its own answers with RAGAS metrics | [repo](https://github.com/shravanA-git/argus) · [live](https://argus-five-tau.vercel.app) |
 | **MacroScope** | ML dashboard that detects which phase of the economic cycle we're in and forecasts transitions | [repo](https://github.com/shravanA-git/macroscope) · [live](https://macroscope-red.vercel.app) |
 | **EarningsEdge** | Scores the tone of corporate earnings calls with FinBERT, adjusted for the macro climate | [repo](https://github.com/shravanA-git/earningsedge) · [live](https://frontend-vert-nu-e3dizlrvd1.vercel.app) |

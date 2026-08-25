@@ -23,6 +23,8 @@ export function buildJsonLd() {
         },
         knowsAbout: [
           "Machine Learning",
+          "AI Agents",
+          "Retrieval-Augmented Generation",
           "Computational Fluid Dynamics",
           "Quantitative Finance",
           "Data Science",
@@ -53,8 +55,8 @@ export function buildJsonLd() {
       },
       ...PROJECTS.map((project) => ({
         "@type": "CreativeWork",
-        "@id": `${SITE_URL}/#${project.slug}`,
-        url: `${SITE_URL}/#${project.slug}`,
+        "@id": `${SITE_URL}/projects#${project.slug}`,
+        url: `${SITE_URL}/projects#${project.slug}`,
         name: project.title,
         description: firstSentence(project.description),
         creator: { "@id": `${SITE_URL}/#person` },

@@ -22,7 +22,7 @@ export function Skills() {
       <SectionHeading
         index="04"
         title="Tools & Disciplines"
-        kicker="A working toolkit across machine learning, simulation, and quantitative finance — built through research projects, not just coursework."
+        kicker="A working toolkit across machine learning, agent infrastructure, simulation, and quantitative finance, built through research projects rather than coursework alone."
       />
       <div className="flex flex-wrap gap-3">
         {FILTERS.map((filter) => {

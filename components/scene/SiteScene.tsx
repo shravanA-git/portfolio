@@ -231,14 +231,14 @@ const COLOR_BOTTOM = new THREE.Color("#8a63ff");
 type ParticleFieldProps = {
   reducedMotion: boolean;
   scrollProgress: React.RefObject<number>;
-  scrollVelocity: React.RefObject<number>;
+  scrollVelocityRef: React.RefObject<number>;
   mouseNDC: React.RefObject<{ x: number; y: number }>;
 };
 
 function ParticleField({
   reducedMotion,
   scrollProgress,
-  scrollVelocity,
+  scrollVelocityRef,
   mouseNDC,
 }: ParticleFieldProps) {
   const materialRef = useRef<InstanceType<typeof ParticleFieldMaterial>>(null);
@@ -249,8 +249,8 @@ function ParticleField({
     const progress = scrollProgress.current;
 
     // Velocity decays each frame so a scroll burst shimmers, then settles.
-    scrollVelocity.current *= 0.92;
-    const speedBoost = Math.min(Math.abs(scrollVelocity.current) / 2500, 1.6);
+    scrollVelocityRef.current *= 0.92;
+    const speedBoost = Math.min(Math.abs(scrollVelocityRef.current) / 2500, 1.6);
 
     if (materialRef.current) {
       if (!reducedMotion) {
@@ -301,7 +301,7 @@ function ParticleField({
 // ── Scroll progress ───────────────────────────────────────────────────────────
 function useGlobalScrollProgress(
   scrollProgress: React.RefObject<number>,
-  scrollVelocity: React.RefObject<number>,
+  scrollVelocityRef: React.RefObject<number>,
   reducedMotion: boolean
 ) {
   useGSAP(() => {
@@ -314,12 +314,12 @@ function useGlobalScrollProgress(
       scrub: true,
       onUpdate: (self) => {
         scrollProgress.current = self.progress;
-        scrollVelocity.current = self.getVelocity();
+        scrollVelocityRef.current = self.getVelocity();
       },
     });
 
     return () => { trigger.kill(); };
-  }, [reducedMotion, scrollProgress, scrollVelocity]);
+  }, [reducedMotion, scrollProgress, scrollVelocityRef]);
 }
 
 // ── SiteScene (exported) ──────────────────────────────────────────────────────
@@ -331,7 +331,7 @@ export function SiteScene() {
   );
 
   const scrollProgress = useRef(0.5);
-  const scrollVelocity = useRef(0);
+  const scrollVelocityRef = useRef(0);
   const mouseNDC = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -345,7 +345,7 @@ export function SiteScene() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  useGlobalScrollProgress(scrollProgress, scrollVelocity, reducedMotion);
+  useGlobalScrollProgress(scrollProgress, scrollVelocityRef, reducedMotion);
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0">
@@ -358,7 +358,7 @@ export function SiteScene() {
         <ParticleField
           reducedMotion={reducedMotion}
           scrollProgress={scrollProgress}
-          scrollVelocity={scrollVelocity}
+          scrollVelocityRef={scrollVelocityRef}
           mouseNDC={mouseNDC}
         />
       </Canvas>

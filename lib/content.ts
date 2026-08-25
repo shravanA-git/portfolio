@@ -1,23 +1,23 @@
 // Single source of truth for site copy and data.
 // Sourced from notes/content.md and notes/research-summary.md.
 
-export const SITE_URL = "https://portfolio-hazel-sigma-58.vercel.app";
+export const SITE_URL = "https://shravananand.me";
 
 export const SITE_TITLE = "Shravan Anand · CS + Economics @ Duke '30";
 
 export const SITE_DESCRIPTION =
-  "Shravan Anand's research portfolio: machine learning, CFD, and quantitative finance projects. CS + Economics, Duke University Class of 2030.";
+  "Shravan Anand's research portfolio: machine learning, agent infrastructure, CFD, and quantitative finance projects. CS + Economics, Duke University Class of 2030.";
 
 export const PERSON = {
   name: "Shravan Anand",
   subtitle: "CS + Economics · Duke University · Class of 2030",
-  kicker: "Research in ML, quantitative finance, and aerospace engineering",
+  kicker: "Research in ML, quantitative finance, agent infrastructure, and aerospace engineering",
   email: "shravan.anand.2026@gmail.com",
   github: "https://github.com/shravanA-git",
   linkedin: "https://www.linkedin.com/in/shravan-anand",
   about: [
-    "Incoming member of Duke University's Class of 2030, studying Computer Science and Economics.",
-    "Work moves between quantitative finance, machine learning, data science, and aerospace engineering: fine-tuning BERT models on financial headlines one month, running thousand-simulation CFD sweeps on rocket geometry the next.",
+    "First-year at Duke University, Class of 2030, studying Computer Science and Economics.",
+    "Work moves between quantitative finance, machine learning, agent infrastructure, and aerospace engineering: fine-tuning BERT models on financial headlines one month, running thousand-simulation CFD sweeps on rocket geometry the next, building a coding agent a whole team can share after that.",
     "Each project starts as a research question and ends as a working pipeline, with the data to back it up.",
   ],
 } as const;
@@ -48,6 +48,24 @@ export type Project = {
 };
 
 export const PROJECTS: Project[] = [
+  {
+    slug: "cofound",
+    title: "Cofound",
+    category: "Multiplayer Coding Agent",
+    description:
+      "A coding agent a whole team shares. The agent's transcript is stored against the project rather than against a person, and the project's standing instructions live in a COFOUND.md the agent re-reads on every run, so a second person's message continues the same conversation instead of starting a new one. Runs stream live to everyone in the project, writes can be gated behind teammate review, and a review comment rides into the next run's prompt as an instruction.",
+    stats: [
+      { value: "673", label: "Self-tests and browser tests, 0 failing" },
+      { value: "1 thread", label: "One shared transcript per project, not per person" },
+      { value: "Per-phase", label: "Model routing across plan, edit, and review" },
+      { value: "Live", label: "Deployed to production on Vercel" },
+    ],
+    tags: ["TypeScript", "Next.js", "Anthropic API", "Redis", "Liveblocks", "GitHub OAuth", "Playwright"],
+    links: [
+      { label: "Live Site →", href: "https://cofound-tau.vercel.app" },
+    ],
+    image: "/images/cofound.png",
+  },
   {
     slug: "macroscope",
     title: "MacroScope",
@@ -205,7 +223,12 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     label: "Web & Backend",
     skills: ["Next.js", "FastAPI", "TypeScript", "React",
-             "Tailwind CSS", "Vercel", "REST APIs"],
+             "Tailwind CSS", "Vercel", "REST APIs", "Redis", "OAuth"],
+  },
+  {
+    label: "Agents & Applied AI",
+    skills: ["Anthropic API", "Tool-Use Agents", "RAG", "pgvector",
+             "LangChain", "RAGAS", "Playwright", "Liveblocks"],
   },
   {
     label: "Simulation & Engineering",
@@ -257,7 +280,7 @@ export const EXPLORE_CARDS: ExploreCard[] = [
     index: "01",
     label: "About",
     description:
-      "CS + Economics at Duke, Class of 2030, with research spanning machine learning, CFD, and quantitative finance.",
+      "CS + Economics at Duke, Class of 2030, with research spanning machine learning, agent infrastructure, CFD, and quantitative finance.",
     meta: "Profile",
   },
   {
@@ -265,7 +288,7 @@ export const EXPLORE_CARDS: ExploreCard[] = [
     index: "02",
     label: "Projects",
     description:
-      "Research projects spanning markets, applied AI, and machine learning, from equity research and macro regime detection to a self-evaluating RAG platform, each shipped as working code and data.",
+      "Research and engineering projects spanning markets, applied AI, and machine learning, from a coding agent a whole team shares to macro regime detection and a self-evaluating RAG platform, each shipped as working code and data.",
     meta: `${PROJECTS.length} projects`,
   },
   {

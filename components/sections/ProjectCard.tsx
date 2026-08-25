@@ -28,7 +28,8 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
 
   return (
     <article
-      className="flex flex-col rounded-2xl border border-border bg-surface/40 overflow-hidden"
+      id={project.slug}
+      className="flex flex-col rounded-2xl border border-border bg-surface/40 overflow-hidden scroll-mt-24"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

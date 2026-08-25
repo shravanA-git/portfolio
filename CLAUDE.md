@@ -26,8 +26,12 @@ No test suite is configured yet.
 
 ## Architecture
 
-This is a **single-page portfolio** (`/`) — all content lives in anchored
-`<section>`s, nav links scroll to anchors rather than routing. See
+The site is a home page (`/`) plus one route per section (`/about`, `/projects`,
+`/awards`, `/skills`, `/leadership`, `/contact`), each rendering the matching
+component from `components/sections/`. `NAV_LINKS` in `lib/content.ts` is the
+source for the header, the sitemap, and the section routes, so adding a section
+means adding a route *and* a nav link. Note that `notes/architecture.md` still
+describes the earlier single-page/anchor plan and is out of date on this point. See
 `notes/architecture.md` for the full component hierarchy, URL plan, and
 semantic HTML/JSON-LD plan, and `design-system.md` for the visual language
 (colors, type scale, spacing tokens).
