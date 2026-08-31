@@ -52,9 +52,14 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
       <div className="flex flex-col gap-8 p-6 sm:p-8">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
           <h3 className="text-display-md font-semibold text-foreground">{project.title}</h3>
-          <span className="shrink-0 rounded-full border border-border px-3 py-1 font-mono text-label uppercase tracking-[0.08em] text-foreground-muted">
-            {project.category}
-          </span>
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            <span className="rounded-full border border-border px-3 py-1 font-mono text-label uppercase tracking-[0.08em] text-foreground-muted">
+              {project.category}
+            </span>
+            <span className="rounded-full border border-border px-3 py-1 font-mono text-label uppercase tracking-[0.08em] text-foreground-muted">
+              {project.period}
+            </span>
+          </div>
         </header>
 
         <p className="max-w-[65ch] text-body text-foreground-secondary">{project.description}</p>

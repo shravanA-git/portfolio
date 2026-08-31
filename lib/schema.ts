@@ -22,11 +22,13 @@ export function buildJsonLd() {
           name: "Duke University",
         },
         knowsAbout: [
+          "Quantitative Finance",
+          "Equity Research",
+          "Valuation",
+          "Macroeconomics",
+          "Time-Series Modeling",
           "Machine Learning",
           "AI Agents",
-          "Retrieval-Augmented Generation",
-          "Computational Fluid Dynamics",
-          "Quantitative Finance",
           "Data Science",
         ],
         award: AWARDS.map((award) =>

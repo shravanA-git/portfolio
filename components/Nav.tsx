@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { NAV_LINKS, PERSON } from "@/lib/content";
+import { NAV_LINKS, PERSON, RESUME_PATH } from "@/lib/content";
 
 export function Nav() {
   const pathname = usePathname();
@@ -43,6 +43,16 @@ export function Nav() {
                 </li>
               );
             })}
+            <li>
+              <a
+                href={RESUME_PATH}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center rounded-full border border-accent px-4 text-accent-on-text transition-colors duration-fast hover:bg-accent hover:text-background"
+              >
+                Resume
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -75,6 +85,17 @@ export function Nav() {
                 </Link>
               </li>
             ))}
+            <li>
+              <a
+                href={RESUME_PATH}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-[44px] items-center text-accent-on-text"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Resume
+              </a>
+            </li>
           </ul>
         </nav>
       )}
