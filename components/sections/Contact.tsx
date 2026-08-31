@@ -1,5 +1,5 @@
 import { SectionHeading } from "@/components/SectionHeading";
-import { CONTACT_LINKS } from "@/lib/content";
+import { CONTACT_LINKS, PERSON } from "@/lib/content";
 
 export function Contact() {
   return (
@@ -7,11 +7,13 @@ export function Contact() {
       <SectionHeading
         index="06"
         title="Get in Touch"
-        kicker="Open to conversations about research, internships, or anything at the intersection of code, data, and flight."
+        kicker={PERSON.seeking}
       />
       <ul className="flex flex-col">
         {CONTACT_LINKS.map((link) => {
-          const isExternal = link.href.startsWith("http");
+          // The resume is a same-origin PDF but should still open in its own
+          // tab rather than navigating the visitor away from the site.
+          const isExternal = link.href.startsWith("http") || link.href.endsWith(".pdf");
           return (
             <li key={link.label} className="border-b border-border last:border-b-0">
               <a

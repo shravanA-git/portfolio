@@ -350,6 +350,12 @@ export function SiteScene() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0">
       <Canvas
+        // R3F sets `pointer-events: auto` on the elements it renders inside
+        // this wrapper, which overrides the inherited `pointer-events-none`
+        // above. Because the wrapper is `fixed`, that made the canvas swallow
+        // clicks on every static element beneath it (project links, contact
+        // links, skill filters). Re-disable it on the canvas itself.
+        style={{ pointerEvents: "none" }}
         camera={{ position: [0, 0, 5], fov: 45 }}
         dpr={[1, 1.5]}
         frameloop={reducedMotion ? "demand" : "always"}

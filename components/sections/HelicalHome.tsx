@@ -5,9 +5,21 @@ import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { EXPLORE_CARDS, PERSON, type ExploreCard } from "@/lib/content";
+import {
+  EXPLORE_CARDS,
+  PERSON,
+  PROJECTS,
+  RESUME_PATH,
+  type ExploreCard,
+} from "@/lib/content";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// The three lead finance projects, surfaced on the home page as proof.
+const FEATURED_SLUGS = ["conviction", "macroscope", "earningsedge"];
+const FEATURED = FEATURED_SLUGS.map(
+  (slug) => PROJECTS.find((project) => project.slug === slug)!
+);
 
 // ── Bioluminescent step hues — one identity color per staircase step ─────────
 const HUES = ["#4d8dff", "#8a63ff", "#3ddad0", "#ff5d8f", "#ffb454", "#7fd0ff"];
@@ -323,12 +335,87 @@ export function HelicalHome() {
         <p data-hs className="mt-6 font-mono text-body-lg text-foreground-secondary">
           {PERSON.subtitle}
         </p>
+
+        <div data-hs className="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href={RESUME_PATH}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center rounded-full border border-accent px-5 font-mono text-label tracking-[0.08em] text-accent-on-text uppercase transition-colors duration-fast hover:bg-accent hover:text-background"
+          >
+            Resume
+          </a>
+          <Link
+            href="/projects"
+            className="inline-flex min-h-[44px] items-center rounded-full border border-border px-5 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase transition-colors duration-fast hover:border-accent hover:text-foreground"
+          >
+            See the Work
+          </Link>
+          <a
+            href={`mailto:${PERSON.email}`}
+            className="inline-flex min-h-[44px] items-center font-mono text-label tracking-[0.08em] text-foreground-muted uppercase underline-offset-4 transition-colors duration-fast hover:text-foreground hover:underline"
+          >
+            Email →
+          </a>
+        </div>
+
         <p
           data-hc
           className="mt-16 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase animate-bounce"
         >
           Scroll
         </p>
+      </section>
+
+      {/* ── Proof band ────────────────────────────────────────────────────── */}
+      {/*
+        The staircase below is navigation, not evidence. A recruiter who reads
+        only the first screenful should still leave with three concrete,
+        checkable results, so the lead finance projects surface here with their
+        headline metric and a direct link.
+      */}
+      <section aria-label="Selected results" className="container-page pb-12 sm:pb-20">
+        <p className="mb-8 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase">
+          Selected Results
+        </p>
+        <ul className="grid gap-4 sm:gap-6 md:grid-cols-3">
+          {FEATURED.map((project) => {
+            const headline = project.stats[0]!;
+            const primary = project.links[0]!;
+            return (
+              <li
+                key={project.slug}
+                className="flex flex-col justify-between gap-6 rounded-2xl border border-border bg-surface/40 p-6 backdrop-blur-sm transition-colors duration-fast hover:border-accent sm:p-8"
+              >
+                <div>
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h2 className="font-display text-display-md font-semibold text-foreground">
+                      {project.title}
+                    </h2>
+                    <span className="shrink-0 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase">
+                      {project.period}
+                    </span>
+                  </div>
+                  <p className="mt-1 font-mono text-label tracking-[0.08em] text-foreground-muted uppercase">
+                    {project.category}
+                  </p>
+                  <p className="mt-6 font-display text-display-md font-semibold text-accent-on-text">
+                    {headline.value}
+                  </p>
+                  <p className="mt-1 text-body text-foreground-muted">{headline.label}</p>
+                </div>
+                <a
+                  href={primary.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-label tracking-[0.08em] text-accent-on-text uppercase underline-offset-4 hover:underline"
+                >
+                  {primary.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       {/* ── 3D spiral staircase ───────────────────────────────────────────── */}
