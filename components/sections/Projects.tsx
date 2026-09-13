@@ -55,7 +55,7 @@ export function Projects() {
       <SectionHeading
         index="02"
         title="Selected Work"
-        kicker="Quantitative finance and applied machine learning, ordered most relevant first. Every project is live, versioned, and dated."
+        kicker="AI agents, retrieval systems, and quantitative finance, ordered most relevant first. Every project is dated and links to a live demo, its code, or a publication."
       />
       <div ref={containerRef} className="flex flex-col gap-8 sm:gap-12">
         {PROJECTS.map((project, i) => (
