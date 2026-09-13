@@ -15,8 +15,8 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-// The three lead finance projects, surfaced on the home page as proof.
-const FEATURED_SLUGS = ["conviction", "macroscope", "earningsedge"];
+// The three lead projects, surfaced on the home page as proof.
+const FEATURED_SLUGS = ["cofound", "argus", "macroscope"];
 const FEATURED = FEATURED_SLUGS.map(
   (slug) => PROJECTS.find((project) => project.slug === slug)!
 );
@@ -371,7 +371,7 @@ export function HelicalHome() {
       {/*
         The staircase below is navigation, not evidence. A recruiter who reads
         only the first screenful should still leave with three concrete,
-        checkable results, so the lead finance projects surface here with their
+        checkable results, so the lead projects surface here with their
         headline metric and a direct link.
       */}
       <section aria-label="Selected results" className="container-page pb-12 sm:pb-20">

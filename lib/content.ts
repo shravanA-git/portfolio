@@ -56,24 +56,43 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    slug: "conviction",
-    title: "Conviction",
-    category: "Equity Research Platform",
+    slug: "cofound",
+    title: "Cofound",
+    category: "Multiplayer Coding Agent",
     period: "2026",
     description:
-      "An equity research notebook where every stock pitch is timestamped in git history and tracked live against the S&P 500, with no retroactive edits. Each pitch is a structured research note: Situation, Complication, and falsifiable thesis pillars, MECE risk tables with mitigants, comparable multiples frozen at pitch date, bear, base, and bull targets, and an interactive DCF with a WACC by terminal-growth sensitivity grid. A form-based Pitch Builder generates new entries.",
+      "A coding agent a whole team shares. The agent's transcript is stored against the project rather than against a person, and the project's standing instructions live in a COFOUND.md the agent re-reads on every run, so a second person's message continues the same conversation instead of starting a new one. Runs stream live to everyone in the project, writes can be gated behind teammate review, and a review comment rides into the next run's prompt as an instruction.",
     stats: [
-      { value: "Live", label: "Performance tracked vs SPY from pitch date" },
-      { value: "3 lenses", label: "Comps, targets, interactive DCF" },
-      { value: "0 deps", label: "Hand-rolled SVG charts, plain math, no LLM" },
-      { value: "Timestamped", label: "Git history is the accountability layer" },
+      { value: "673", label: "Self-tests and browser tests, 0 failing" },
+      { value: "1 thread", label: "One shared transcript per project, not per person" },
+      { value: "Per-phase", label: "Model routing across plan, edit, and review" },
+      { value: "Live", label: "Deployed to production on Vercel" },
     ],
-    tags: ["TypeScript", "Next.js", "Valuation", "DCF", "Equity Research"],
+    tags: ["TypeScript", "Next.js", "Anthropic API", "Redis", "Liveblocks", "GitHub OAuth", "Playwright"],
     links: [
-      { label: "Live Site \u2192", href: "https://conviction-woad.vercel.app" },
-      { label: "Code on GitHub \u2192", href: "https://github.com/shravanA-git/conviction" },
+      { label: "Live Site \u2192", href: "https://cofound-tau.vercel.app" },
     ],
-    image: "/images/conviction.png",
+    image: "/images/cofound.png",
+  },
+  {
+    slug: "argus",
+    title: "Argus",
+    category: "Multi-Agent RAG Platform",
+    period: "2026",
+    description:
+      "A production multi-agent RAG platform that answers questions about uploaded documents with inline citations, then grades its own answers. Five agents handle ingestion, query routing, hybrid retrieval (pgvector dense search fused with BM25 and reranked by a cross-encoder), streaming synthesis, and an automated RAGAS evaluation loop that scores every answer for faithfulness, context precision, and answer relevancy. Runs entirely on free-tier infrastructure.",
+    stats: [
+      { value: "1.00", label: "Hit@5, hybrid retrieval benchmark" },
+      { value: "0.92", label: "MRR with cross-encoder reranking" },
+      { value: "5 agents", label: "Ingest, route, retrieve, synthesize, evaluate" },
+      { value: "Live", label: "Deployed to production on Vercel" },
+    ],
+    tags: ["TypeScript", "Next.js", "pgvector", "LangChain", "RAGAS", "Groq", "HuggingFace", "Neon"],
+    links: [
+      { label: "Live Demo \u2192", href: "https://argus-five-tau.vercel.app" },
+      { label: "Code on GitHub \u2192", href: "https://github.com/shravanA-git/argus" },
+    ],
+    image: "/images/argus.png",
   },
   {
     slug: "macroscope",
@@ -94,6 +113,26 @@ export const PROJECTS: Project[] = [
       { label: "Code on GitHub \u2192", href: "https://github.com/shravanA-git/macroscope" },
     ],
     image: "/images/macroscope.png",
+  },
+  {
+    slug: "conviction",
+    title: "Conviction",
+    category: "Equity Research Platform",
+    period: "2026",
+    description:
+      "An equity research notebook where every stock pitch is timestamped in git history and tracked live against the S&P 500, with no retroactive edits. Each pitch is a structured research note: Situation, Complication, and falsifiable thesis pillars, MECE risk tables with mitigants, comparable multiples frozen at pitch date, bear, base, and bull targets, and an interactive DCF with a WACC by terminal-growth sensitivity grid. A form-based Pitch Builder generates new entries.",
+    stats: [
+      { value: "Live", label: "Performance tracked vs SPY from pitch date" },
+      { value: "3 lenses", label: "Comps, targets, interactive DCF" },
+      { value: "0 deps", label: "Hand-rolled SVG charts, plain math, no LLM" },
+      { value: "Timestamped", label: "Git history is the accountability layer" },
+    ],
+    tags: ["TypeScript", "Next.js", "Valuation", "DCF", "Equity Research"],
+    links: [
+      { label: "Live Site \u2192", href: "https://conviction-woad.vercel.app" },
+      { label: "Code on GitHub \u2192", href: "https://github.com/shravanA-git/conviction" },
+    ],
+    image: "/images/conviction.png",
   },
   {
     slug: "earningsedge",
@@ -132,45 +171,6 @@ export const PROJECTS: Project[] = [
       { label: "Code on GitHub \u2192", href: "https://github.com/shravanA-git/NLPFinance" },
     ],
     image: "/images/nlp-finance.png",
-  },
-  {
-    slug: "cofound",
-    title: "Cofound",
-    category: "Multiplayer Coding Agent",
-    period: "2026",
-    description:
-      "A coding agent a whole team shares. The agent's transcript is stored against the project rather than against a person, and the project's standing instructions live in a COFOUND.md the agent re-reads on every run, so a second person's message continues the same conversation instead of starting a new one. Runs stream live to everyone in the project, writes can be gated behind teammate review, and a review comment rides into the next run's prompt as an instruction.",
-    stats: [
-      { value: "673", label: "Self-tests and browser tests, 0 failing" },
-      { value: "1 thread", label: "One shared transcript per project, not per person" },
-      { value: "Per-phase", label: "Model routing across plan, edit, and review" },
-      { value: "Live", label: "Deployed to production on Vercel" },
-    ],
-    tags: ["TypeScript", "Next.js", "Anthropic API", "Redis", "Liveblocks", "GitHub OAuth", "Playwright"],
-    links: [
-      { label: "Live Site \u2192", href: "https://cofound-tau.vercel.app" },
-    ],
-    image: "/images/cofound.png",
-  },
-  {
-    slug: "argus",
-    title: "Argus",
-    category: "Multi-Agent RAG Platform",
-    period: "2026",
-    description:
-      "A production multi-agent RAG platform that answers questions about uploaded documents with inline citations, then grades its own answers. Five agents handle ingestion, query routing, hybrid retrieval (pgvector dense search fused with BM25 and reranked by a cross-encoder), streaming synthesis, and an automated RAGAS evaluation loop that scores every answer for faithfulness, context precision, and answer relevancy. Runs entirely on free-tier infrastructure.",
-    stats: [
-      { value: "1.00", label: "Hit@5, hybrid retrieval benchmark" },
-      { value: "0.92", label: "MRR with cross-encoder reranking" },
-      { value: "5 agents", label: "Ingest, route, retrieve, synthesize, evaluate" },
-      { value: "Live", label: "Deployed to production on Vercel" },
-    ],
-    tags: ["TypeScript", "Next.js", "pgvector", "LangChain", "RAGAS", "Groq", "HuggingFace", "Neon"],
-    links: [
-      { label: "Live Demo \u2192", href: "https://argus-five-tau.vercel.app" },
-      { label: "Code on GitHub \u2192", href: "https://github.com/shravanA-git/argus" },
-    ],
-    image: "/images/argus.png",
   },
   {
     slug: "traffic-collision-ml",
