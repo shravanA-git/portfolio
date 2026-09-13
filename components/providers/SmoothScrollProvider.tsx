@@ -3,6 +3,9 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
+// Required: sets html/body to height:auto so Lenis's ResizeObserver on <html>
+// sees content growth. Without it, `h-full` on <html> freezes the scroll limit.
+import "lenis/dist/lenis.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -51,9 +54,12 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       window.scrollTo(0, 0);
     }
 
-    // Give React one frame to render the new page content, then
-    // tell ScrollTrigger to remeasure all trigger positions
-    const id = window.setTimeout(() => ScrollTrigger.refresh(), 100);
+    // Give React one frame to render the new page content, then remeasure
+    // Lenis's scroll limit and all ScrollTrigger positions
+    const id = window.setTimeout(() => {
+      lenisRef.current?.resize();
+      ScrollTrigger.refresh();
+    }, 100);
     return () => window.clearTimeout(id);
   }, [pathname]);
 

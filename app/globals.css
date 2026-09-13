@@ -81,6 +81,11 @@
     scroll-behavior: smooth;
   }
 
+  /* Lenis drives scrolling itself; native smooth-scroll fights it */
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
   body {
     background-color: var(--color-background);
     /* Bioluminescent aurora — fixed low-opacity glows behind everything */
