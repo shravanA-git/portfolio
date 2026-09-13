@@ -140,9 +140,9 @@ export const PROJECTS: Project[] = [
     category: "Earnings Call Intelligence",
     period: "2026",
     description:
-      "An earnings call intelligence platform that scores SEC EDGAR transcripts with FinBERT sentiment analysis, then adjusts each score for the prevailing macro regime supplied by MacroScope. The result is a sentiment surprise signal: whether a company sounded better or worse than the economic climate would predict. Covers 20 S&P 500 tickers across 6 sectors, with live filing analysis and generated PDF reports.",
+      "An earnings call intelligence platform that scores SEC EDGAR transcripts with FinBERT sentiment analysis, then adjusts each score for the prevailing macro regime supplied by MacroScope. The result is a sentiment surprise signal: whether a company sounded better or worse than the economic climate would predict. Analyzes the latest earnings release for any ticker live, backed by a 38-call historical dataset across 12 S&P 500 companies, with generated PDF reports.",
     stats: [
-      { value: "20", label: "S&P 500 tickers across 6 sectors" },
+      { value: "Any ticker", label: "Live analysis of the latest earnings release" },
       { value: "FinBERT", label: "Domain-tuned financial sentiment model" },
       { value: "4 regimes", label: "MacroScope HMM baselines per call" },
       { value: "Live", label: "Deployed to production on Vercel" },
