@@ -8,6 +8,7 @@ import { CustomCursor } from "@/components/providers/CustomCursor";
 import { SiteScene } from "@/components/scene/SiteScene";
 import { PERSON, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/content";
 import { buildJsonLd } from "@/lib/schema";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -89,6 +90,7 @@ export default function RootLayout({
           <main id="main-content" tabIndex={-1}>{children}</main>
           <Footer />
         </SmoothScrollProvider>
+        <Analytics />
       </body>
     </html>
   );
